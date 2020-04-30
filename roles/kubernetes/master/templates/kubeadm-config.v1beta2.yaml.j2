@@ -7,7 +7,11 @@ bootstrapTokens:
   ttl: "24h"
 {% endif %}
 localAPIEndpoint:
+{% if dualstack is defined and ipfamily is defined and ipfamily == "ipv6" %}
+  advertiseAddress: {{ ip6 | default(fallback_ips[inventory_hostname]) }}
+{% else %}
   advertiseAddress: {{ ip | default(fallback_ips[inventory_hostname]) }}
+{% endif %}
   bindPort: {{ kube_apiserver_port }}
 {% if kubeadm_certificate_key is defined %}
 certificateKey: {{ kubeadm_certificate_key }}
@@ -86,6 +90,8 @@ dns:
   type: CoreDNS
   imageRepository: {{ coredns_image_repo | regex_replace('/coredns$','') }}
   imageTag: {{ coredns_image_tag }}
+featureGates:
+  IPv6DualStack: true
 networking:
   dnsDomain: {{ dns_domain }}
   serviceSubnet: {{ kube_service_addresses }}
@@ -94,7 +100,11 @@ kubernetesVersion: {{ kube_version }}
 {% if kubeadm_config_api_fqdn is defined %}
 controlPlaneEndpoint: {{ kubeadm_config_api_fqdn }}:{{ loadbalancer_apiserver.port | default(kube_apiserver_port) }}
 {% else %}
+{% if dualstack is defined and ipfamily == "ipv6" %}
+controlPlaneEndpoint: "[{{ ip6 | default(fallback_ips[inventory_hostname]) }}]:{{ kube_apiserver_port }}"
+{% else %}
 controlPlaneEndpoint: {{ ip | default(fallback_ips[inventory_hostname]) }}:{{ kube_apiserver_port }}
+{% endif %}
 {% endif %}
 certificatesDir: {{ kube_cert_dir }}
 imageRepository: {{ kube_image_repo }}
@@ -237,7 +247,7 @@ controllerManager:
     node-monitor-grace-period: {{ kube_controller_node_monitor_grace_period }}
     node-monitor-period: {{ kube_controller_node_monitor_period }}
     pod-eviction-timeout: {{ kube_controller_pod_eviction_timeout }}
-    node-cidr-mask-size: "{{ kube_network_node_prefix }}"
+#    node-cidr-mask-size: "{{ kube_network_node_prefix }}"
     profiling: "{{ kube_profiling }}"
     terminated-pod-gc-threshold: "{{ kube_controller_terminated_pod_gc_threshold }}"
     bind-address: {{ kube_controller_manager_bind_address }}

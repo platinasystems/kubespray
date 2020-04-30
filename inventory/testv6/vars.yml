@@ -1,0 +1,11 @@
+ansible_ssh_private_key_file: /home/gopal/keys/key_pcc217
+reset_restart_network: false
+cluster_name: testv6
+ansible_user: pcc
+flush_iptables: false
+kube_version: v1.18.2
+kube_network_plugin: kube-router
+helm_enabled: true
+docker_dns_servers_strict: false
+kube_pods_subnet: f300::/48,10.1.64.0/18
+kube_service_addresses: f400::/112,10.1.0.0/18

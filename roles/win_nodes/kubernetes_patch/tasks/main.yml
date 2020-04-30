@@ -20,6 +20,7 @@
       delay: 5
       until: current_kube_proxy_state is succeeded
       changed_when: false
+      ignore_errors: yes
 
     - name: Apply nodeselector patch for kube-proxy daemonset
       shell: >-
@@ -28,6 +29,7 @@
         '{"spec":{"template":{"spec":{"nodeSelector":{"{{ kube_proxy_nodeselector }}":"linux"} }}}}'
       register: patch_kube_proxy_state
       when: current_kube_proxy_state.stdout | trim | lower != "linux"
+      ignore_errors: yes
 
     - debug: msg={{ patch_kube_proxy_state.stdout_lines }}
       when: patch_kube_proxy_state is not skipped

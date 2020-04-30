@@ -1,5 +1,16 @@
 ---
 
+- name: kube-router | Purge kube-proxy daemonset
+  kube:
+    name: kube-proxy
+    kubectl: "{{ bin_dir }}/kubectl"
+    resource: "ds"
+    namespace: "kube-system"
+    state: absent
+  when:
+    - inventory_hostname == groups['kube-master'][0]
+    - kube_proxy_remove
+
 - name: kube-router | Start Resources
   kube:
     name: "kube-router"

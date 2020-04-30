@@ -40,11 +40,16 @@
   run_once: yes
   when: kubeconfig_localhost
 
+#- name: Wait for k8s apiserver
+#  wait_for:
+#    host: "{{ kube_apiserver_access_address }}"
+#    port: "{{ kube_apiserver_port }}"
+#    timeout: 180
+
 - name: Wait for k8s apiserver
   wait_for:
-    host: "{{ kube_apiserver_access_address }}"
-    port: "{{ kube_apiserver_port }}"
-    timeout: 180
+    timeout: 10
+  delegate_to: localhost
 
 # NOTE(mattymo): Please forgive this workaround
 - name: Generate admin kubeconfig with external api endpoint
