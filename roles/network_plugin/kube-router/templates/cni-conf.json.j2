@@ -14,7 +14,11 @@
 {% if host_subnet is defined %}
             "subnet": "{{ host_subnet }}",
 {% endif %}
-            "type":"host-local"
+            "type":"host-local",
+	    "ranges" : [
+                [ { "subnet" : "fa00::/64" } ],
+                [ { "subnet" : "10.0.0.0/24" } ]
+            ]
          }
       }
    ]

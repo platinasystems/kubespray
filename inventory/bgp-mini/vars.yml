@@ -1,0 +1,11 @@
+ansible_ssh_private_key_file: /home/gopal/.ssh/id_rsa
+reset_restart_network: false
+cluster_name: bgp6
+ansible_user: sjctatapoc
+flush_iptables: false
+kube_version: v1.18.2
+kube_network_plugin: kube-router
+helm_enabled: true
+docker_dns_servers_strict: false
+kube_pods_subnet: 10.1.64.0/18
+kube_service_addresses: 10.1.0.0/18

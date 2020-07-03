@@ -1,4 +1,12 @@
----
+#kube_router_image_repo: "platinasystems/kube-router"
+#kube_router_version: "v0.2.0-0.2"
+
+kube_router_image_repo: "gvogety/kube-router"
+#kube_router_image_tag: "v1.0rc1-pltv6-v5"
+kube_router_image_tag: "v1.0-dual-rc1"
+
+# See roles/network_plugin/kube-router//defaults/main.yml
+
 # Enables Pod Networking -- Advertises and learns the routes to Pods via iBGP
 kube_router_run_router: true
 
@@ -7,56 +15,49 @@ kube_router_run_firewall: true
 
 # Enables Service Proxy -- sets up IPVS for Kubernetes Services
 # see docs/kube-router.md "Caveats" section
-kube_router_run_service_proxy: false
+kube_router_run_service_proxy: true
 
 # Add Cluster IP of the service to the RIB so that it gets advertises to the BGP peers.
-kube_router_advertise_cluster_ip: false
+# kube_router_advertise_cluster_ip: false
 
 # Add External IP of service to the RIB so that it gets advertised to the BGP peers.
-kube_router_advertise_external_ip: false
+# kube_router_advertise_external_ip: false
 
 # Add LoadbBalancer IP of service status as set by the LB provider to the RIB so that it gets advertised to the BGP peers.
-kube_router_advertise_loadbalancer_ip: false
+# kube_router_advertise_loadbalancer_ip: false
 
 # Adjust manifest of kube-router daemonset template with DSR needed changes
-kube_router_enable_dsr: false
+kube_router_enable_dsr: true
 
 # Array of arbitrary extra arguments to kube-router, see
 # https://github.com/cloudnativelabs/kube-router/blob/master/docs/user-guide.md
-kube_router_extra_args: []
+kube_router_extra_args:
+- --override-nexthop
+- --nodes-full-mesh=false
+- --enable-ibgp=false
+- --enable-overlay=false
+- --bgp-port=180
+- --v=5
+- --enable-ipv6
 
 # ASN numbers of the BGP peer to which cluster nodes will advertise cluster ip and node's pod cidr.
-kube_router_peer_router_asns: ~
+# kube_router_peer_router_asns: ~
 
 # The ip address of the external router to which all nodes will peer and advertise the cluster ip and pod cidr's.
-kube_router_peer_router_ips: ~
+# kube_router_peer_router_ips: ~
 
 # The remote port of the external BGP to which all nodes will peer. If not set, default BGP port (179) will be used.
-kube_router_peer_router_ports: ~
+# kube_router_peer_router_ports: ~
 
 # Setups node CNI to allow hairpin mode, requires node reboots, see
 # https://github.com/cloudnativelabs/kube-router/blob/master/docs/user-guide.md#hairpin-mode
-kube_router_support_hairpin_mode: false
-
-# Adds annotations to kubernetes nodes for advanced configuration of BGP Peers.
-# https://github.com/cloudnativelabs/kube-router/blob/master/docs/bgp.md
+# kube_router_support_hairpin_mode: false
 
 # Array of annotations for master
-kube_router_annotations_master: []
+# kube_router_annotations_master: []
 
 # Array of annotations for every node
-kube_router_annotations_node: []
+# kube_router_annotations_node: []
 
 # Array of common annotations for every node
-kube_router_annotations_all: 
-- kube-router.io/node-ipv4="{{ ip }}"
-- kube-router.io/node-ipv6="{{ ip6 }}"
-
-# Enables scraping kube-router metrics with Prometheus
-kube_router_enable_metrics: false
-
-# Path to serve Prometheus metrics on
-kube_router_metrics_path: /metrics
-
-# Prometheus metrics port to use
-kube_router_metrics_port: 9255
+# kube_router_annotations_all: []
