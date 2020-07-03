@@ -127,6 +127,10 @@
     group: root
     mode: "0644"
 
+- name: Debug kubeadm discovered address and apiserver endpoint
+  debug:
+    msg: Debug Kubeadm Discivered address {{ kubeadm_discovery_address }}, API Server Endpoint {{ kube_apiserver_endpoint }}
+
 - name: Restart all kube-proxy pods to ensure that they load the new configmap
   shell: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf delete pod -n kube-system -l k8s-app=kube-proxy --force --grace-period=0"
   run_once: true
@@ -137,6 +141,7 @@
     - not kube_proxy_remove
   tags:
     - kube-proxy
+  ignore_errors: true
 
 # FIXME(mattymo): Reconcile kubelet kubeconfig filename for both deploy modes
 - name: Symlink kubelet kubeconfig for calico/canal
