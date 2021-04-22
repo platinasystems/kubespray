@@ -21,6 +21,29 @@
       kubelet_cgroup_driver_detected: "{{ crio_cgroup_driver_result.stdout }}"
   when: container_manager == 'crio'
 
+
+# advertised host IP for kubelet. This affects network plugin config. Take caution
+#kubelet_address: >-
+#  {% if dualstack and ipfamily == "ipv6" %}
+#  {{ip6 | default(fallback_ips[inventory_hostname])}}
+#  {% else %}
+#  {{ip | default(fallback_ips[inventory_hostname])}}
+#  {% endif %}
+
+# bind address for kubelet. Set to 0.0.0.0 to listen on all interfaces
+#kubelet_bind_address: >-
+#  {% if dualstack and ipfamily == "ipv6" %}
+#  {{ip6 | default('0.0.0.0')}}
+#  {% else %}
+#  {{ip | default('0.0.0.0')}}
+#  {% endif %}
+
+- name: set kubelet_address
+  set_fact:
+    kubelet_address: "{{ ip6 }}"
+    kubelet_bind_address: "{{ ip6 }}"
+  when: dualstack is defined and ipfamily == 'ipv6' 
+
 - name: set kubelet_cgroup_driver_detected fact for containerd
   set_fact:
     kubelet_cgroup_driver_detected: >-

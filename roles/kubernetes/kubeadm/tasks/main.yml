@@ -135,6 +135,10 @@
     group: root
     mode: "0644"
 
+- name: Debug kubeadm discovered address and apiserver endpoint
+  debug:
+    msg: Debug Kubeadm Discivered address {{ kubeadm_discovery_address }}, API Server Endpoint {{ kube_apiserver_endpoint }}
+
 - name: Restart all kube-proxy pods to ensure that they load the new configmap
   command: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf delete pod -n kube-system -l k8s-app=kube-proxy --force --grace-period=0"
   run_once: true
@@ -146,6 +150,7 @@
     - kube_proxy_deployed
   tags:
     - kube-proxy
+  ignore_errors: true
 
 - name: Extract etcd certs from control plane if using etcd kubeadm mode
   include_tasks: kubeadm_etcd_node.yml

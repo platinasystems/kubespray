@@ -87,3 +87,11 @@
     state: present
     params: 'numdummies=0'
   when: enable_nodelocaldns
+
+- name: Enable ipv6 forwarding
+  sysctl:
+    sysctl_file: "{{ sysctl_file_path }}"
+    name: net.ipv6.conf.all.forwarding
+    value: 1
+    state: present
+    reload: yes

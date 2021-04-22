@@ -14,7 +14,7 @@
     # ansible_all_ipv6_addresses
     - name: Gather necessary facts (network)
       setup:
-        gather_subset: '!all,!min,network'
+        gather_subset: '!all,!min,network,hardware'
         filter: "ansible_*_ipv[46]*"
 
     # filter match the following variables:

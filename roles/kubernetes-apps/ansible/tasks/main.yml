@@ -68,8 +68,8 @@
   tags:
     - netchecker
 
-- name: Kubernetes Apps | Dashboard
-  import_tasks: dashboard.yml
-  when: dashboard_enabled
-  tags:
-    - dashboard
+#- name: Kubernetes Apps | Dashboard
+#  import_tasks: dashboard.yml
+#  when: dashboard_enabled
+#  tags:
+#    - dashboard

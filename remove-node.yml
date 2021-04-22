@@ -17,7 +17,7 @@
         msg: "Delete nodes confirmation failed"
       when: delete_nodes_confirmation != "yes"
 
-- hosts: kube-master[0]
+- hosts: kube-master
   gather_facts: no
   environment: "{{ proxy_disable_env }}"
   roles:

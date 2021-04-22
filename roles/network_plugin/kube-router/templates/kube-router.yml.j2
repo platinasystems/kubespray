@@ -40,6 +40,9 @@ spec:
         - --run-service-proxy={{ kube_router_run_service_proxy | bool }}
         - --kubeconfig=/var/lib/kube-router/kubeconfig
         - --bgp-graceful-restart=true
+{% if dualstack is defined and ipfamily == "ipv6" %}
+        - --router-id={{ ip6 }}
+{% endif %}
 {% if kube_router_advertise_cluster_ip %}
         - --advertise-cluster-ip
 {% endif %}

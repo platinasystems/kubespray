@@ -14,6 +14,20 @@
 - name: Set role node label to empty list
   set_fact:
     role_node_labels: []
+    role_k8s_master: "kubernetes.io/master=''"
+    role_k8s_node: "kubernetes.io/node=''"
+
+- name: Set kubernetes.io/master role to node
+  set_fact:
+    role_node_labels: "{{ role_node_labels + [ role_k8s_master ] }}"
+  when: inventory_hostname in groups['kube-master']
+
+- name: Set kubernetes.io/node role to node
+  set_fact:
+    role_node_labels: "{{ role_node_labels + [ role_k8s_node ] }}"
+  when: inventory_hostname not in groups['kube-master']
+
+- debug: var=role_node_labels
 
 - name: Node label for nvidia GPU nodes
   set_fact:
