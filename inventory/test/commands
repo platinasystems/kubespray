@@ -1,0 +1,5 @@
+# install 
+ansible-playbook -vv -i inventory/test/hosts.ini  --become --become-user=root cluster.yml -e "@inventory/test/vars.yml"
+
+# uninstall 
+ansible-playbook -vv -i inventory/test/hosts-rem.ini  --become --become-user=root remove-node.yml -e "@inventory/test/vars.yml"
