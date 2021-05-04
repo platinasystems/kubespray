@@ -103,6 +103,6 @@
         etcd_cluster_setup: true
       when:
         - etcd_kubeadm_enabled
-  rescue:
-    - include_role:
-        name: "debug"
+          #  rescue:
+          #    - include_role:
+          #        name: "debug"

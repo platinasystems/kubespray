@@ -272,7 +272,6 @@ controllerManager:
   extraArgs:
     node-monitor-grace-period: {{ kube_controller_node_monitor_grace_period }}
     node-monitor-period: {{ kube_controller_node_monitor_period }}
-    pod-eviction-timeout: {{ kube_controller_pod_eviction_timeout }}
 #    node-cidr-mask-size: "{{ kube_network_node_prefix }}"
     profiling: "{{ kube_profiling }}"
     terminated-pod-gc-threshold: "{{ kube_controller_terminated_pod_gc_threshold }}"
@@ -408,10 +407,3 @@ featureGates:
 {% else %}
 {% set kubelet_cluster_dns = [] %}
 {% endif %}
----
-apiVersion: kubelet.config.k8s.io/v1beta1
-kind: KubeletConfiguration
-clusterDNS:
-{% for dns_address in kubelet_cluster_dns %}
-- {{ dns_address }}
-{% endfor %}

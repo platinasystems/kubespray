@@ -53,7 +53,7 @@ kube_router_annotations_node: []
 # Array of common annotations for every node
 kube_router_annotations_all: 
 - kube-router.io/node-ipv4="{{ ip }}"
-- kube-router.io/node-ipv6="{{ ip6 }}"
+#- kube-router.io/node-ipv6="{{ ip6 }}"
 
 # Enables scraping kube-router metrics with Prometheus
 kube_router_enable_metrics: false
