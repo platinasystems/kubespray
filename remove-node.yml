@@ -2,20 +2,20 @@
 - name: Check ansible version
   import_playbook: ansible_version.yml
 
-- hosts: "{{ node | default('etcd:k8s-cluster:calico-rr') }}"
-  gather_facts: no
-  environment: "{{ proxy_disable_env }}"
-  vars_prompt:
-    name: "delete_nodes_confirmation"
-    prompt: "Are you sure you want to delete nodes state? Type 'yes' to delete nodes."
-    default: "no"
-    private: no
+  #- hosts: "{{ node | default('etcd:k8s-cluster:calico-rr') }}"
+  #  gather_facts: no
+  #  environment: "{{ proxy_disable_env }}"
+  #  vars_prompt:
+  #    name: "delete_nodes_confirmation"
+  #    prompt: "Are you sure you want to delete nodes state? Type 'yes' to delete nodes."
+  #    default: "no"
+  #    private: no
 
-  pre_tasks:
-    - name: check confirmation
-      fail:
-        msg: "Delete nodes confirmation failed"
-      when: delete_nodes_confirmation != "yes"
+  #  pre_tasks:
+  #    - name: check confirmation
+  #      fail:
+  #        msg: "Delete nodes confirmation failed"
+  #      when: delete_nodes_confirmation != "yes"
 
 - hosts: kube-master
   gather_facts: no
